@@ -1,0 +1,41 @@
+run:
+    skip-dirs-use-default: false
+linters-settings:
+    gocyclo:
+        min-complexity: 15
+    errcheck:
+        check-type-assertions: true
+linters:
+    disable-all: true
+    enable:
+        - bodyclose
+        - depguard
+        - dogsled
+        - dupl
+        - errcheck
+        - exportloopref
+        - funlen
+        - gochecknoinits
+        - goconst
+        - gocritic
+        - gocyclo
+        - gofmt
+        - goimports
+        - gomnd
+        - goprintffuncname
+        - gosec
+        - gosimple
+        - govet
+        - ineffassign
+        - lll
+        - misspell
+        - nakedret
+        - noctx
+        - nolintlint
+        - staticcheck
+        - stylecheck
+        - typecheck
+        - unconvert
+        - unparam
+        - unused
+        - whitespace
