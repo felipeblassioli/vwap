@@ -7,7 +7,7 @@ import (
 // RingBuffer represents a single instance of the ring buffer
 // data structure.
 type RingBuffer[T any] struct {
-	sync.Mutex
+	mu sync.Mutex
 
 	buf    []T
 	count  int
@@ -29,14 +29,14 @@ func NewRingBuffer[T any](maxCap int) *RingBuffer[T] {
 // PushBack appends an element to the back of the queue.
 // If the ring buffer is empty, the call panics
 func (r *RingBuffer[T]) PushBack(item T) {
-	r.Lock()
+	r.mu.Lock()
 	r.buf[r.end] = item
 	r.end++
 	r.end %= len(r.buf)
 	if r.count < r.maxCap {
 		r.count++
 	}
-	r.Unlock()
+	r.mu.Unlock()
 }
 
 // PopFront removes and returns the element from the front of the queue.
@@ -45,12 +45,12 @@ func (r *RingBuffer[T]) PopFront() T {
 	if r.count <= 0 {
 		panic("ringbuf: PopFront() called in an empty buffer")
 	}
-	r.Lock()
+	r.mu.Lock()
 	item := r.buf[r.start]
 	r.start++
 	r.start %= len(r.buf)
 	r.count--
-	r.Unlock()
+	r.mu.Unlock()
 
 	return item
 }
