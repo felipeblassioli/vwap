@@ -2,7 +2,7 @@ before:
   hooks:
     - go mod tidy
 builds:
-  - main: ./cmd/foo/main.go
+  - main: ./cmd/vwap/main.go
     env:
       - CGO_ENABLED=0
     goos:
