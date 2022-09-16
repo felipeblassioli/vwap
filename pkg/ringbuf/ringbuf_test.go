@@ -104,7 +104,7 @@ func TestRingBuffer_PopFront(t *testing.T) {
 			}
 		}()
 		// maximum capacity doesn't matter for this test
-		rb := NewRingBuffer[int](rand.Intn(32)) //nolint:gosec
+		rb := NewRingBuffer[int](rand.Intn(32))
 		rb.PopFront()
 	})
 }
@@ -118,7 +118,7 @@ func TestRingBuffer_Len(t *testing.T) {
 
 	t.Run("Empty", func(t *testing.T) {
 		// maximum capacity doesn't matter for this test
-		rb := NewRingBuffer[int](rand.Intn(32)) //nolint:gosec
+		rb := NewRingBuffer[int](rand.Intn(32))
 		assert.Equal(t, 0, rb.Len())
 	})
 }
@@ -126,7 +126,7 @@ func TestRingBuffer_Len(t *testing.T) {
 func TestRingBuffer_PushPopLen(t *testing.T) {
 	t.Run("PushPop within bounds", func(t *testing.T) {
 		var (
-			sz = rand.Intn(32) //nolint:gosec
+			sz = rand.Intn(32)
 			rb = NewRingBuffer[int](sz)
 		)
 
@@ -142,7 +142,7 @@ func TestRingBuffer_PushPopLen(t *testing.T) {
 
 	t.Run("Len does not exceed maximum capacity", func(t *testing.T) {
 		var (
-			sz = rand.Intn(32) //nolint:gosec
+			sz = rand.Intn(32)
 			rb = NewRingBuffer[int](sz)
 		)
 

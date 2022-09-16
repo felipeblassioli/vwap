@@ -3,6 +3,12 @@ run:
 linters-settings:
     dupl:
         threshold: 100
+    forbidigo:
+        forbid:
+            - '^fmt\.Print'
+            - '^log\.'
+            - '^print$'
+            - '^println$'
     funlen:
         lines: 100
         statements: 50
@@ -27,6 +33,10 @@ linters-settings:
         local-prefixes: github.com/felipeblassioli/vwap
     lll:
         line-length: 140
+    importas:
+        alias:
+            - pkg: github.com/gorilla/websocket
+              alias: ws
     misspell:
         locale: US
     nolintlint:
@@ -43,6 +53,7 @@ linters:
         - dupl
         - errcheck
         - exportloopref
+        - forbidigo
         - funlen
         - gochecknoinits
         - goconst
@@ -57,6 +68,7 @@ linters:
         - govet
         - ineffassign
         - lll
+        - importas
         - misspell
         - nakedret
         - noctx
@@ -68,3 +80,11 @@ linters:
         - unparam
         - unused
         - whitespace
+issues:
+    exclude-rules:
+        - path: _test\.go
+          linters:
+              #- gocyclo
+              - errcheck
+              - dupl
+              - gosec
