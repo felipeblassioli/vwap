@@ -2,7 +2,6 @@ package wstest
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -38,8 +37,6 @@ type FakeCoinbaseServer struct {
 // NewFakeCoinbaseServer starts and returns a new FakeCoinbaseServer.
 //
 // The caller should call Close when finished, to shut it down.
-//
-//nolint:all
 func NewFakeCoinbaseServer() *FakeCoinbaseServer {
 	var (
 		s = &FakeCoinbaseServer{
@@ -60,24 +57,22 @@ func NewFakeCoinbaseServer() *FakeCoinbaseServer {
 				msg := <-s.messagesToBeWritten
 				err = c.WriteMessage(msg.Type, msg.Data)
 				if err != nil {
-					fmt.Println("xxxERROR", err)
 					break
 				}
 			}
 		}()
 
 		for {
-			err := c.SetReadDeadline(time.Now().Add(1 * time.Second))
-			if err != nil {
-				fmt.Println("setReadDeadline error", err)
+			if err := c.SetReadDeadline(time.Now().Add(1 * time.Second)); err != nil {
+				panic(err)
 			}
 			mt, data, err := c.ReadMessage()
 			if err != nil {
-				fmt.Println("ERROROR", err)
-				break
+				panic(err)
 			}
 			s.recordedMessages = append(s.recordedMessages, Message{mt, data})
 			if debug {
+				//nolint:forbidigo // Removed by the compiler
 				log.Printf("recorded Message{%d %s}\n", mt, string(data))
 			}
 			if s.readMessageHandler != nil {

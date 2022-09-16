@@ -25,7 +25,7 @@ func Test_Connect(t *testing.T) {
 	// err.DNSError: Invalid URI
 	t.Run("Invalid URI", func(t *testing.T) {
 		var e *net.DNSError
-		err = c.Connect(ctx, "wss://INVALID.sandbox.exchange.coinbase.com")
+		err = c.Connect(ctx, "ws://INVALID.sandbox.exchange.coinbase.com")
 		assert.ErrorAs(t, err, &e)
 	})
 
