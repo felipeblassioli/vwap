@@ -60,7 +60,7 @@ func NewSubscription(conn *ws.Conn, windowWidth int) *Subscription {
 
 // matchWatcher watches Coinbase Websocket Feed updates.
 // All feed updates are put in the go channel Subscription.C
-func (s *Subscription) matchWatcher() {
+func (s *Subscription) matchWatcher(ctx context.Context) {
 	var reterr error
 	conn := s.conn
 
@@ -78,7 +78,7 @@ func (s *Subscription) matchWatcher() {
 	go func() {
 		// If pinger stops then we will violate the ReadDeadline for
 		// this watcher.
-		s.done <- pinger(context.Background(), s.conn)
+		s.done <- pinger(ctx, s.conn)
 	}()
 
 	// Set read deadline to a time less than next expected pong.
@@ -148,14 +148,6 @@ func pinger(ctx context.Context, conn *ws.Conn) error {
 			}
 		}
 	}
-}
-
-// Stop stops the subscriptions from reading feed updates.
-// It also closes the chanel s.C
-func (s *Subscription) Stop() {
-	<-s.done
-	close(s.C)
-	close(s.done)
 }
 
 // Done returns a channel that blocks until the subscription is stopped.

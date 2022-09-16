@@ -12,7 +12,7 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-const debug = true // enable for debugging
+const debug = false // enable for debugging
 
 type ReadMessageHandler func(c *ws.Conn, messageType int, message []byte)
 

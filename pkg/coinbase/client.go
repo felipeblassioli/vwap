@@ -94,7 +94,7 @@ func (c *MatchesClient) Connect(ctx context.Context, addr string) error {
 // Subscribe subscribes to "matches" channel from Coinbase Websocket Feed.
 // It puts all FeedUpdate in the channel Subscription.C
 func (c *MatchesClient) Subscribe(
-	_ context.Context,
+	ctx context.Context,
 	productID string,
 	windowWidth int,
 ) (*Subscription, error) {
@@ -128,7 +128,10 @@ func (c *MatchesClient) Subscribe(
 
 	s := NewSubscription(c.conn, windowWidth)
 
-	go s.matchWatcher()
+	go func() {
+		s.matchWatcher(ctx)
+		s.conn.Close()
+	}()
 
 	return s, nil
 }
@@ -141,6 +144,7 @@ func (c *MatchesClient) Unsubscribe(productID string) error {
 	if productID != "" {
 		productIDs = append(productIDs, productID)
 	}
+
 	unsubscribe := &Unsubscribe{
 		Type:       "unsubscribe",
 		ProductIds: productIDs,
